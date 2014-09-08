@@ -35,13 +35,13 @@
 
 <a name="welcome" class="anchor" href="#welcome"><span class="octicon octicon-link"></span></a>What is a population receptive field?</h3>
 
-<p>A population receptive field (pRF) is a quantitative model of the cumulative response of the population of cells contained within a single fMRI voxel.  The pRF model allows us to interpret and predict the responses of a voxel to different stimuli.  The pRF model can be designed to describe a wide variety of sensory and cognitive processes.</p>
+<p>A population receptive field (pRF) is a quantitative model of the cumulative response of the population of cells contained within a single fMRI voxel.  The pRF model allows us to interpret and predict the responses of a voxel to different stimuli.  Such pRF models can be designed to describe a wide variety of sensory and cognitive processes.</p>
 
 <h3><a name="welcome" class="anchor" href="#welcome"><span class="octicon octicon-link"></span></a>Installation</h3>
 
 <p>Download the popeye source code from the GitHub repository.  Links to the tarball and zip files are at the top of this page for your convenience.  Using popeye requires that you have installed <a href="http://www.numpy.org/">NumPy</a>, <a href="http://www.scipy.org/">SciPy</a>, and <a href="http://www.cython.org/">Cython</a>.  Installing <a href="http://www.matplotlib.org/">matplotlib</a> is recommended as we'll be plotting the results of our pRF estimation but is not required for any of the model fitting procedures in popeye.</p>
 
-<p>Once you've download the popeye source code and installed the aforementioned dependencies, you'll need to install popeye and build the Cython extensions I've written for speeding up the analyses.</p> 
+<p>Once you've downloaded the popeye source code and installed the aforementioned dependencies, you'll need to install popeye and build the Cython extensions I've written for speeding up the analyses.</p> 
 
 <pre><code><font size="2">
 $ cd popeye
@@ -76,7 +76,7 @@ num_steps = 20 # integer
 
 # set the timing and scale properties
 tr_length = 1.0 # seconds
-frames_per_tr = 1.0 # integer
+frames_per_tr = 1 # integer
 scale_factor = 0.05 # scaling factor between 0 and 1
 
 # create the sweeping bar stimulus in memory
@@ -94,7 +94,7 @@ fit_bounds = ((-12,12),(-12,12),(1/stimulus.ppd,12),(-5,5),(0.1,1e2))
 # initialize the gaussian model
 model = gaussian.GaussianModel(stimulus)
 
-# generate a random pRF estimate
+# invent a pRF estimate
 x = -5.24 # degrees
 y = 2.583 # degrees
 sigma = 1.24 # degrees
@@ -115,28 +115,22 @@ data = fftconvolve(stim,hrf)[0:len(stim)] * beta
 # fit the response
 fit = gaussian.GaussianFit(data, model, search_bounds, fit_bounds, tr_length)
 
-</font></code></pre>
+</font></code></pre></br>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p> Below is the output of the model fit we invoked in the code block above.  Notice that the model fits the data perfectly (the residual sum of squared error is approximately 0).  This may seem somewhat circular in that we've invented a pRF estimate and BOLD time-series only to then fit the "data" to derive the invented pRF estimate we started with in the first place.  However, this approach is useful for writing tests to ensure robustness of the fitting procedures during development and for demonstrating the functionality of popeye.</p>
 
-<h3><a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<img src="images/demo.png">
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
 
 <h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
+<p>Popeye was created by Kevin DeSimone (<a href="https://github.com/kdesimone" class="user-mention">@kdesimone</a>) with significant contributions and guidance from Ariel Rokem (<a href="https://github.com/arokem" class="user-mention">@arokem</a>).</p>
 <h3>
+
 <a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Having trouble with popoeye? Contact <a href="mailto:kevindesimone@gmail.com">kevindesimone@gmail.com</a> and I'll help you sort it out.</p>
       </section>
     </div>
 
