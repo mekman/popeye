@@ -107,7 +107,7 @@ stim = MakeFastGaussPrediction(stimulus.deg_x, stimulus.deg_y,
                                x, y, sigma)
 
 # create the HRF
-hrf = utils.double_gamma_hrf(hrf_delay, tr_length, frames_per_tr)
+hrf = utils.double_gamma_hrf(hrf_delay, tr_length)
 
 # simulate the BOLD response
 data = fftconvolve(stim,hrf)[0:len(stim)] * beta
