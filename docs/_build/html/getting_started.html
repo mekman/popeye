@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started &mdash; Popeye 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Popeye 0.1 documentation" href="index.html" />
+    <link rel="prev" title="What is a PRF?" href="prf.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="prf.html" title="What is a PRF?"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Popeye 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>To get started using <tt class="xref py py-mod docutils literal"><span class="pre">popeye</span></tt>, you will need to organize your data in the
+following manner:</p>
+<blockquote>
+<div><ul class="simple">
+<li>You put the lime in the coconut.</li>
+<li>Drink it all up.</li>
+</ul>
+</div></blockquote>
+<p>To run the analysis:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">popeye.base</span> <span class="kn">import</span> <span class="n">PopulationModel</span><span class="p">,</span> <span class="n">PopulationFit</span>
+<span class="kn">from</span> <span class="nn">popeye.stimulus</span> <span class="kn">import</span> <span class="n">Stimulus</span>
+
+<span class="c"># stimulus features</span>
+<span class="n">pixels_across</span> <span class="o">=</span> <span class="mi">800</span>
+<span class="n">pixels_down</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="n">viewing_distance</span> <span class="o">=</span> <span class="mi">38</span>
+<span class="n">screen_width</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">,</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">num_steps</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">ecc</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">tr_length</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="c"># create the sweeping bar stimulus in memory</span>
+<span class="n">bar</span> <span class="o">=</span> <span class="n">simulate_bar_stimulus</span><span class="p">(</span><span class="n">pixels_across</span><span class="p">,</span> <span class="n">pixels_down</span><span class="p">,</span> <span class="n">viewing_distance</span><span class="p">,</span>
+                                              <span class="n">screen_width</span><span class="p">,</span> <span class="n">thetas</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">ecc</span><span class="p">)</span>
+
+<span class="c"># instantiate an instance of the Stimulus class</span>
+<span class="n">stimulus</span> <span class="o">=</span> <span class="n">Stimulus</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">viewing_distance</span><span class="p">,</span> <span class="n">screen_width</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c"># set up bounds for the grid search</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">((</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">5.25</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c"># initialize the gaussian model</span>
+<span class="n">prf_model</span> <span class="o">=</span> <span class="n">prf</span><span class="o">.</span><span class="n">GaussianModel</span><span class="p">(</span><span class="n">stimulus</span><span class="p">)</span>
+
+
+<span class="c"># generate the modeled BOLD response</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">prf</span><span class="o">.</span><span class="n">MakeFastPrediction</span><span class="p">(</span><span class="n">stimulus</span><span class="o">.</span><span class="n">deg_x</span><span class="p">,</span> <span class="n">stimulus</span><span class="o">.</span><span class="n">deg_y</span><span class="p">,</span>
+                                  <span class="n">stimulus</span><span class="o">.</span><span class="n">stim_arr</span><span class="p">,</span> <span class="n">estimate</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">estimate</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">estimate</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="n">hrf</span> <span class="o">=</span> <span class="n">prf</span><span class="o">.</span><span class="n">double_gamma_hrf</span><span class="p">(</span><span class="n">estimate</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">zscore</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">hrf</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)])</span>
+
+<span class="c"># fit the response</span>
+<span class="n">prf_fit</span> <span class="o">=</span> <span class="n">prf</span><span class="o">.</span><span class="n">GaussianFit</span><span class="p">(</span><span class="n">prf_model</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">tr_length</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="prf.html"
+                        title="previous chapter">What is a PRF?</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/getting_started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="prf.html" title="What is a PRF?"
+             >previous</a> |</li>
+        <li><a href="index.html">Popeye 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Kevin DeSimone.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
