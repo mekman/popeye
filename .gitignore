@@ -1,1 +1,6 @@
-_site
+*.so
+*.c
+*.pyc
+build/
+doc/_build
+doc/reference
