@@ -7,7 +7,7 @@ Base-classes for poulation encoding models and fits.
 
 import numpy as np
 import ctypes
-import sharedmem
+# import sharedmem
 
 class PopulationModel(object):
     """ Abstract class which holds the PopulationModel
@@ -30,6 +30,6 @@ class StimulusModel(object):
 
     def __init__(self, stim_arr):
         
-        self.stim_arr  = sharedmem.empty(stim_arr.shape, dtype='float64')
-        self.stim_arr[:] = stim_arr[:]
+        #self.stim_arr  = sharedmem.empty(stim_arr.shape, dtype='float64')
+        self.stim_arr = stim_arr
 
